@@ -11,8 +11,8 @@ php artisan template:install
 chmod -R 777 storage bootstrap/cache
 ```
 
-## Colaboradores
+<!-- ## Colaboradores -->
 
-<a href="https://github.com/agustinmejia/laravel_template/graphs/contributors">
+<!-- <a href="https://github.com/agustinmejia/laravel_template/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=agustinmejia/laravel_template" />
-</a>
+</a> -->
