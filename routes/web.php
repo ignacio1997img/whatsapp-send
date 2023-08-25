@@ -38,6 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
     // Sender
     Route::get('sender', [SenderController::class, 'index'])->name('sender.index');
     Route::post('sender/send', [SenderController::class, 'send'])->name('sender.send');
+    
 });
 
 // Clear cache

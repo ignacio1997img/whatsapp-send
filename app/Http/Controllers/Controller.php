@@ -13,7 +13,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
-use Image;
+use Intervention\Image\ImageManagerStatic as Image;
+
+// use Image;
 
 class Controller extends BaseController
 {
@@ -24,21 +26,26 @@ class Controller extends BaseController
             abort(403, 'THIS ACTION IS UNAUTHORIZED.');
         }
     }
-
+    
     public function save_image($file, $dir){
         try {
-            Storage::makeDirectory("/public/$dir/".date('F').date('Y'));
+            Storage::makeDirectory($dir.'/'.date('F').date('Y'));
             $base_name = Str::random(20);
 
             // imagen normal
             $filename = $base_name.'.'.$file->getClientOriginalExtension();
             $image_resize = Image::make($file->getRealPath())->orientate();
+            // return $image_resize;
             $image_resize->resize(1000, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
+
             $path =  "$dir/".date('F').date('Y').'/'.$filename;
+
+            // return $path;
             $image_resize->save(public_path('../storage/app/public/'.$path));
             $imagen = $path;
+            // return $imagen;
 
             // imagen mediana
             $filename_medium = $base_name.'-medium.'.$file->getClientOriginalExtension();

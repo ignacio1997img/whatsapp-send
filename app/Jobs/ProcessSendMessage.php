@@ -45,13 +45,13 @@ class ProcessSendMessage implements ShouldQueue
         $server = Server::where('status', 1)->first();
         $phone = strlen($this->message->contact->phone) == 8 ? '591'.$this->message->contact->phone : $this->message->contact->phone;
         Http::post($server->url.'/send', [
-            'phone' => $phone,
+            'phone' => '59167285914',
             'text' => $this->message->text,
             'image' => $this->message->image ? url('storage/'.$this->message->image) : '',
         ]);
         $message = Message::find($this->message->id);
         $message->server_id = $server->id;
-        $message->status = 'enviado';
+        $message->status = 'enviadosss';
         $message->update();
     }
 }

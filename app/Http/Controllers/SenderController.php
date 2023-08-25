@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Http;
+
 // Models
 use App\Models\Contact;
 use App\Models\Server;
@@ -30,6 +32,7 @@ class SenderController extends Controller
             // return $request;
             $contact_id = $request->contact_id;
             $image = $this->save_image($request->file('image'), 'messages');
+            // dd($image);
 
             if($contact_id[0] == 'todos'){
                 $contacts = Contact::where('status', 1)->where('deleted_at', null)->get();
@@ -50,12 +53,23 @@ class SenderController extends Controller
                     ]);
 
                     $message = Message::find($new_message->id);
-                    ProcessSendMessage::dispatch($message);
+                    // return $message;
+                    return $server->url.'/send';
+
+
+                    Http::post($server->url.'/send', [
+                        'phone' => strlen($message->contact->phone) == 8 ? '591'.$message->contact->phone : $message->contact->phone,
+                        'text' => url('storage/'.$message->image),
+                        // 'image' => $message->image ? url('storage/'.$message->image) : '',asset('storage/'.$requirement->ci)
+                        'image' => $message->image ? url('storage/app/public/'.$message->image):'',
+                    ]);
+                    // return 1;
+                    // ProcessSendMessage::dispatch($message);
                 }
             }else {
                 return redirect()->route('sender.index')->with(['message' => 'No hay servidores activos', 'alert-type' => 'error']);
             }
-
+            return 1;
             return redirect()->route('sender.index')->with(['message' => 'Mensaje enviado exitosamente', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             // dd($th);
